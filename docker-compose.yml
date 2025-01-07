@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: pg_container
+    environment:
+      POSTGRES_USER: root          # Usuário do banco de dados
+      POSTGRES_PASSWORD: 1587      # Senha do usuário
+      POSTGRES_DB: db             # Nome do banco de dados
+    ports:
+      - "5432:5432"               # Mapeamento da porta do PostgreSQL
+    volumes:
+      - pg_data:/var/lib/postgresql/data # Persistência de dados
+
+volumes:
+  pg_data:
