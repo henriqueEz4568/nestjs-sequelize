@@ -3,40 +3,45 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Cria a tabela 'users' com as colunas 'name', 'password' e 'email'
     await queryInterface.createTable('users', {
-      id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+      internal_id: {
+        type: Sequelize.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        allowNull: false,
+        defaultValue: Sequelize.literal('gen_random_uuid()'),
       },
-      name: {
+      email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true, // Garantir que o e-mail seja único
       },
-      createdAt: {
+      created: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.NOW,
       },
-      updatedAt: {
+      modified: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.NOW,
+      },
+      removed: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: null,
       },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    // Reverte a criação da tabela 'users'
     await queryInterface.dropTable('users');
-  },
+  }
 };
