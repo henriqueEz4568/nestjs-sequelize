@@ -1,3 +1,5 @@
+import { UUIDV4 } from 'sequelize';
+
 export type EntityDTO = {
   id?: string;
   dbId?: number;
@@ -13,12 +15,34 @@ export default class Entity {
   private _modified: Date;
   private _removed?: Date;
 
+  private _notifications: Notification;
+  private _errors: Notification;
+
   constructor(data: EntityDTO) {
     this._id = data.id;
     this._dbId = data.dbId;
     this._created = data.created ? data.created : new Date();
     this._modified = data.modified ? data.modified : new Date();
     this._removed = data.removed ? data.removed : undefined;
+    this.validateEntity();
+  }
+
+  get notifications(): Notification {
+    return this._notifications;
+  }
+
+  get errors(): Notification {
+    return this._errors;
+  }
+
+  private validateEntity(): void {
+    if (!this._id || this._id === '') {
+      this._id = String(UUIDV4);
+    }
+
+    if (!this._modified) {
+      throw new Error('Modified is not defined');
+    }
   }
 
   get id(): string {
