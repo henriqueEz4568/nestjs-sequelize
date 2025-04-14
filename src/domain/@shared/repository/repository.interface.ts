@@ -22,4 +22,5 @@ export default interface IRepositoryInterface<T> {
   getAll(data?: RepositoryOptions, transaction?: any): Promise<T[]>;
   getOne(data: RepositoryOptions, transaction?: any): Promise<T>;
   count(data: RepositoryOptions, transaction?: any): Promise<RepositoryCount>;
+  save(entity: T, transaction: any): Promise<T>;
 }

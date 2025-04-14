@@ -6,8 +6,12 @@ import {
   RepositoryCount,
 } from 'src/domain/@shared/repository/repository.interface';
 import { UserModel } from 'src/infra/db/models/user.model';
+import UserFactory from '@entities/user/factory/user.factory';
 
 export default class UserRepository implements IUserRepository {
+  save(entity: User, transaction: any): Promise<User> {
+    throw new Error('Method not implemented');
+  }
   count(data: RepositoryOptions, transaction?: any): Promise<RepositoryCount> {
     throw new Error('Method not implemented');
   }
@@ -18,13 +22,7 @@ export default class UserRepository implements IUserRepository {
       email: entity.email,
       password: entity.password,
     });
-    return new User({
-      dbId: data.id,
-      id: data.internal_id,
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+    return UserFactory.createFromSequelizeModel(data);
   }
   delete(dbId: number): Promise<boolean> {
     throw new Error('Method not implemented');
@@ -37,5 +35,16 @@ export default class UserRepository implements IUserRepository {
   }
   getOne(data: RepositoryOptions, transaction?: any): Promise<User> {
     throw new Error('Method not implemented');
+  }
+  async getByEmail(email: string): Promise<User | undefined> {
+    const user = await UserModel.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      return undefined;
+    }
+    return UserFactory.createFromSequelizeModel(user);
   }
 }
