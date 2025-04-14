@@ -4,7 +4,6 @@ import { UserModel } from 'src/infra/db/models/user.model';
 import UserRepository from 'src/infra/repository/sequelize/user/user.repository';
 import UserCreateUseCase from 'src/domain/usecases/user/user-create.usecase';
 import { UserOutputDTO } from '@entities/user/user.entity';
-const repository = new UserRepository();
 @Controller('users')
 export class UserController {
   //constructor(private readonly appService: AppService) {}
@@ -21,6 +20,7 @@ export class UserController {
   }
   @Post('login')
   async login(@Body() body: any): Promise<any> {
+    const repository = new UserRepository();
     const user = await repository.getByEmail(body.email)
     if(user.password === body.password){
       return 'Found'
@@ -33,6 +33,7 @@ export class UserController {
   async createUser(
     @Body() body: any,
   ): Promise<UserOutputDTO | { success: boolean; message: string }> {
+    const repository = new UserRepository();
     try {
       const usecase = new UserCreateUseCase(repository);
       return await usecase.execute(body);
