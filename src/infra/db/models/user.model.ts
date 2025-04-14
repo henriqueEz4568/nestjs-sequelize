@@ -7,6 +7,7 @@ import {
   Default,
   CreatedAt,
   UpdatedAt,
+  AutoIncrement,
 } from 'sequelize-typescript';
 
 @Table({
@@ -15,9 +16,17 @@ import {
 })
 export class UserModel extends Model {
   @PrimaryKey
+  @AutoIncrement
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  id!: number;
+
   @Column({
     type: DataType.UUID,
     allowNull: false,
+    unique: true,
   })
   internal_id!: string;
 
