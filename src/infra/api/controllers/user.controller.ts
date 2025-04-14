@@ -4,6 +4,8 @@ import { UserModel } from 'src/infra/db/models/user.model';
 import UserRepository from 'src/infra/repository/sequelize/user/user.repository';
 import UserCreateUseCase from 'src/domain/usecases/user/user-create.usecase';
 import { UserOutputDTO } from '@entities/user/user.entity';
+import { BcryptHasher } from 'src/infra/factory/encrypt/bcrypt/bcrypt-encrypt-engine';
+const hasher = new BcryptHasher();
 @Controller('users')
 export class UserController {
   //constructor(private readonly appService: AppService) {}
@@ -20,20 +22,25 @@ export class UserController {
   }
   @Post('login')
   async login(@Body() body: any): Promise<any> {
-    const repository = new UserRepository();
-    const user = await repository.getByEmail(body.email)
-    if(user.password === body.password){
-      return 'Found'
-    }
-    else{
-      return 'Not found'
+    const repository = new UserRepository(hasher);
+    const user = await repository.getByEmail(body.email);
+    const isValid = await hasher.compare(body.password, user.password);
+    if (isValid) {
+      return {
+        success: true,
+        user,
+      };
+    } else {
+      return {
+        success: false,
+      };
     }
   }
   @Post()
   async createUser(
     @Body() body: any,
   ): Promise<UserOutputDTO | { success: boolean; message: string }> {
-    const repository = new UserRepository();
+    const repository = new UserRepository(hasher);
     try {
       const usecase = new UserCreateUseCase(repository);
       return await usecase.execute(body);
