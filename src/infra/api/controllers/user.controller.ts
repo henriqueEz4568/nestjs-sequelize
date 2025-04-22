@@ -4,9 +4,10 @@ import { UserModel } from 'src/infra/db/models/user.model';
 import UserRepository from 'src/infra/repository/sequelize/user/user.repository';
 import UserCreateUseCase from 'src/domain/usecases/user/user-create.usecase';
 import { UserOutputDTO } from '@entities/user/user.entity';
+import { JwtService } from '@nestjs/jwt';
 @Controller('users')
 export class UserController {
-  //constructor(private readonly appService: AppService) {}
+  constructor(private jwt: JwtService) {}
   @Get()
   async getHello(): Promise<UserModel[]> {
     const users = await UserModel.findAll({});
@@ -21,13 +22,19 @@ export class UserController {
   @Post('login')
   async login(@Body() body: any): Promise<any> {
     const repository = new UserRepository();
-    const user = await repository.getByEmail(body.email)
-    if(user.password === body.password){
-      return 'Found'
+    const user = await repository.getByEmail(body.email);
+    if (user.password === body.password) {
+      return 'Found';
+    } else {
+      return 'Not found';
     }
-    else{
-      return 'Not found'
-    }
+  }
+  @Get('token')
+  async handle() {
+    const token = await this.jwt.sign({ sub: 'user-id' });
+    return {
+      token
+    };
   }
   @Post()
   async createUser(
