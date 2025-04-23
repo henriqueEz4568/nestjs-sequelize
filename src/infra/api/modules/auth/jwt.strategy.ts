@@ -8,13 +8,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { z } from 'zod';
 
 const tokenSchema = z.object({
-  sub: z.string().uuid(),
+  internal_id: z.string().uuid(),
 });
 export type TokenSchema = z.infer<typeof tokenSchema>;
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     const publicKey = process.env.JWT_PUBLIC_KEY;
+    console.log(publicKey)
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 

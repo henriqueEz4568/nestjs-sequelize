@@ -28,7 +28,7 @@ export class UserController {
   async createUser(
     @Body() body: any,
   ): Promise<UserOutputDTO | { success: boolean; message: string }> {
-    const repository = new UserRepository(hasher);
+    const repository = new UserRepository();
     try {
       const usecase = new UserCreateUseCase(repository);
       return await usecase.execute(body);
