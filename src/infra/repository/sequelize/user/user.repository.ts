@@ -10,7 +10,6 @@ import UserFactory from '@entities/user/factory/user.factory';
 import { IHasher } from 'src/domain/@shared/interface/hasher.interface';
 
 export default class UserRepository implements IUserRepository {
-  constructor(private hasher: IHasher) {}
   save(entity: User, transaction: any): Promise<User> {
     throw new Error('Method not implemented');
   }
@@ -18,12 +17,11 @@ export default class UserRepository implements IUserRepository {
     throw new Error('Method not implemented');
   }
   async create(entity: User): Promise<User> {
-    const hashedPassword = await this.hasher.hash(entity.password);
     const data = await UserModel.create({
       internal_id: uuidv4(),
       name: entity.name,
       email: entity.email,
-      password: hashedPassword,
+      password: entity.password,
     });
     return UserFactory.createFromSequelizeModel(data);
   }

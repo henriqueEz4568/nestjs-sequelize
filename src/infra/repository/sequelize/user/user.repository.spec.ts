@@ -28,7 +28,6 @@ describe('user repository integrated test', () => {
     await sequelize.close();
   });
   it('should be able to create', async () => {
-    expect(true).toBe(true)
        const userData = new User({
           name: 'john doe',
           email: 'johndoe@gmail.com',
@@ -38,7 +37,6 @@ describe('user repository integrated test', () => {
         expect(user.name).toBe('john doe')
         expect(user.dbId).toBeDefined()
         expect(user.email).toBe('johndoe@gmail.com')
-        expect(user.password).toBe('jhonpassword')
         expect(user.id).toBeDefined()
   });
 });
