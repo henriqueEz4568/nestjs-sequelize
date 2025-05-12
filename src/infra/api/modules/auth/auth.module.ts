@@ -3,10 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthenticateController } from '../../controllers/auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import { DatabaseModule } from '../sequelize/database.sequelize.module';
 
 @Module({
   imports: [
     PassportModule,
+    DatabaseModule,
     JwtModule.registerAsync({
       useFactory() {
         return {

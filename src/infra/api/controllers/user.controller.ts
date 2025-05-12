@@ -7,11 +7,15 @@ import { UserOutputDTO } from '@entities/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptHasher } from 'src/infra/factory/encrypt/bcrypt/bcrypt-encrypt-engine';
 import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
+import { IUserRepository } from '@entities/user/repository/user.repository.interface';
 const hasher = new BcryptHasher();
 @Controller('users')
 @UseGuards(JwtAuthGuard)
 export class UserController {
-  constructor(private jwt: JwtService) {}
+  constructor(
+    private jwt: JwtService,
+    private repository: IUserRepository,
+  ) {}
   @Get()
   async getHello(): Promise<UserModel[]> {
     const users = await UserModel.findAll({});
@@ -28,9 +32,8 @@ export class UserController {
   async createUser(
     @Body() body: any,
   ): Promise<UserOutputDTO | { success: boolean; message: string }> {
-    const repository = new UserRepository();
     try {
-      const usecase = new UserCreateUseCase(repository);
+      const usecase = new UserCreateUseCase(this.repository);
       return await usecase.execute(body);
     } catch (e: any) {
       return {

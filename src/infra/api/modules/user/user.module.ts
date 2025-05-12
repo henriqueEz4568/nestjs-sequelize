@@ -1,15 +1,14 @@
 import { forwardRef, Module } from '@nestjs/common';
 
 import { ConfigModule } from '@nestjs/config';
-import { SequelizeModule } from '../sequelize/sequelize.module';
 import { UserController } from '../../controllers/user.controller';
 import { AuthModule } from '../auth/auth.module';
+import { DatabaseModule } from '../sequelize/database.sequelize.module';
 
 @Module({
   imports: [
-    SequelizeModule,
     AuthModule,
-    UserModule,
+    DatabaseModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
