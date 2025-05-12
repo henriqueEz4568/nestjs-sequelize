@@ -3,9 +3,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthenticateController } from '../../controllers/auth.controller';
 import { DatabaseModule } from '../sequelize/database.sequelize.module';
-import { UserModule } from '../user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserController } from '../../controllers/user.controller';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +17,6 @@ import { UserController } from '../../controllers/user.controller';
     }),
   ],
   exports: [DatabaseModule],
-  controllers: [UserController],
+  controllers: [AuthenticateController,UserController, ],
 })
-export class AuthModule {}
+export class HttpModule {}
