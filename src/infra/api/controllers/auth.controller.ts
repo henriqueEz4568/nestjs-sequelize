@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, Put, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { UserModel } from 'src/infra/db/models/user.model';
 import UserRepository from 'src/infra/repository/sequelize/user/user.repository';
@@ -7,9 +14,13 @@ import { UserOutputDTO } from '@entities/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptHasher } from 'src/infra/factory/encrypt/bcrypt/bcrypt-encrypt-engine';
 import { compare, hash } from 'bcryptjs';
+import { IUserRepository } from '@entities/user/repository/user.repository.interface';
 @Controller('auth')
 export class AuthenticateController {
-  constructor(private jwt: JwtService) {}
+  constructor(
+    private jwt: JwtService,
+    private repository: IUserRepository,
+  ) {}
   @Get()
   async listAll(): Promise<UserModel[]> {
     const users = await UserModel.findAll({});
@@ -17,8 +28,7 @@ export class AuthenticateController {
   }
   @Post('login')
   async login(@Body() body: any): Promise<any> {
-    const repository = new UserRepository();
-    const user = await repository.getByEmail(body.email);
+    const user = await this.repository.getByEmail(body.email);
     const isPasswordValid = await compare(body.password, user.password); // aqui comparamos a senha
 
     if (!isPasswordValid) {

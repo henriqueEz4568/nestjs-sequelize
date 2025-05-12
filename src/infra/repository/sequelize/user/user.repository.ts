@@ -1,4 +1,4 @@
-import IUserRepository from '@entities/user/repository/user.repository.interface';
+
 import User from '@entities/user/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -8,6 +8,7 @@ import {
 import { UserModel } from 'src/infra/db/models/user.model';
 import UserFactory from '@entities/user/factory/user.factory';
 import { IHasher } from 'src/domain/@shared/interface/hasher.interface';
+import { IUserRepository } from '@entities/user/repository/user.repository.interface';
 
 export default class UserRepository implements IUserRepository {
   save(entity: User, transaction: any): Promise<User> {

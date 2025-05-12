@@ -1,4 +1,5 @@
-import IUserRepository from '@entities/user/repository/user.repository.interface';
+
+import { IUserRepository } from '@entities/user/repository/user.repository.interface';
 import User, { UserOutputDTO } from '@entities/user/user.entity';
 import { hash } from 'bcryptjs';
 
