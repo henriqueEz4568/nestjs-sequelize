@@ -8,19 +8,20 @@ import {
   CreatedAt,
   UpdatedAt,
   AutoIncrement,
-  HasMany,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
-import { FilesModel } from './files.model';
+import { UserModel } from './user.model';
 
 @Table({
-  tableName: 'users',
-  timestamps: false,
+  tableName: 'files',
+  timestamps: true,
   paranoid: true,
   createdAt: 'created',
   updatedAt: 'modified',
   deletedAt: 'removed',
 })
-export class UserModel extends Model {
+export class FilesModel extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column({
@@ -30,31 +31,27 @@ export class UserModel extends Model {
   id!: number;
 
   @Column({
-    type: DataType.UUID,
-    allowNull: false,
+    type: DataType.STRING,
+    allowNull: true,
     unique: true,
   })
-  internal_id!: string;
+  url!: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
   })
-  email!: string;
+  directory!: string;
 
+  @ForeignKey(() => UserModel)
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   })
-  password!: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  name!: string;
-
+  user_id!: number;
+  
+  @BelongsTo(() => UserModel)
+  user!: UserModel;
   @Default(DataType.NOW)
   @Column({
     type: DataType.DATE,
@@ -75,7 +72,4 @@ export class UserModel extends Model {
     defaultValue: null,
   })
   removed!: Date | null;
-
-  @HasMany(() => FilesModel, 'user_id')
-  declare files?: FilesModel[];
 }
