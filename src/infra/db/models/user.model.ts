@@ -5,8 +5,6 @@ import {
   DataType,
   PrimaryKey,
   Default,
-  CreatedAt,
-  UpdatedAt,
   AutoIncrement,
   HasMany,
 } from 'sequelize-typescript';
@@ -27,54 +25,54 @@ export class UserModel extends Model {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  id!: number;
+  declare id: number;
 
   @Column({
     type: DataType.UUID,
     allowNull: false,
     unique: true,
   })
-  internal_id!: string;
+  declare internal_id: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     unique: true,
   })
-  email!: string;
+  declare email: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  password!: string;
+  declare password: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  name!: string;
+  declare name: string;
 
   @Default(DataType.NOW)
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  created!: Date;
+  declare created: Date;
 
   @Default(DataType.NOW)
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  modified!: Date;
+  declare modified: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
     defaultValue: null,
   })
-  removed!: Date | null;
+  declare removed: Date | null;
 
   @HasMany(() => FilesModel, 'user_id')
   declare files?: FilesModel[];
