@@ -5,75 +5,71 @@ import {
   DataType,
   PrimaryKey,
   Default,
+  CreatedAt,
+  UpdatedAt,
   AutoIncrement,
-  HasMany,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
-import { FilesModel } from './files.model';
+import { UserModel } from './user.model';
 
 @Table({
-  tableName: 'users',
-  timestamps: false,
+  tableName: 'files',
+  timestamps: true,
   paranoid: true,
   createdAt: 'created',
   updatedAt: 'modified',
   deletedAt: 'removed',
 })
-export class UserModel extends Model {
+export class FilesModel extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  declare id: number;
+  id!: number;
 
   @Column({
-    type: DataType.UUID,
-    allowNull: false,
+    type: DataType.STRING,
+    allowNull: true,
     unique: true,
   })
-  declare internal_id: string;
+  url!: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
   })
-  declare email: string;
+  directory!: string;
 
+  @ForeignKey(() => UserModel)
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   })
-  declare password: string;
-
+  user_id!: number;
+  
+  @BelongsTo(() => UserModel)
+  user!: UserModel;
+  @Default(DataType.NOW)
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: false,
   })
-  declare name: string;
+  created!: Date;
 
   @Default(DataType.NOW)
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  declare created: Date;
-
-  @Default(DataType.NOW)
-  @Column({
-    type: DataType.DATE,
-    allowNull: false,
-  })
-  declare modified: Date;
+  modified!: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
     defaultValue: null,
   })
-  declare removed: Date | null;
-
-  @HasMany(() => FilesModel, 'user_id')
-  declare files?: FilesModel[];
+  removed!: Date | null;
 }
