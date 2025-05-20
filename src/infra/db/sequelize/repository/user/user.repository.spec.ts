@@ -2,8 +2,8 @@
 import User from '@entities/user/user.entity';
 import { Sequelize } from 'sequelize-typescript';
 import { UserModel } from 'src/infra/db/models/user.model';
-import UserRepository from './user.repository';
 import { FilesModel } from 'src/infra/db/models/files.model';
+import UserRepository from './user.repository';
 const repository = new UserRepository();
 describe('user repository integrated test', () => {
   let sequelize: Sequelize;
