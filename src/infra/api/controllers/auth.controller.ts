@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { UserModel } from 'src/infra/db/models/user.model';
-import UserRepository from 'src/infra/repository/sequelize/user/user.repository';
+import UserRepository from 'src/infra/db/sequelize/repository/sequelize/user/user.repository';
 import UserCreateUseCase from 'src/domain/usecases/user/user-create.usecase';
 import { UserOutputDTO } from '@entities/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
