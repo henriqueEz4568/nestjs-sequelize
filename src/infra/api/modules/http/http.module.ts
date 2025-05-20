@@ -6,6 +6,8 @@ import { DatabaseModule } from '../sequelize/database.sequelize.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserController } from '../../controllers/user.controller';
 import { AuthModule } from '../auth/auth.module';
+import { UserCreateUseCase } from 'src/domain/usecases/user/user-create.usecase';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { AuthModule } from '../auth/auth.module';
     }),
   ],
   exports: [DatabaseModule],
-  controllers: [AuthenticateController,UserController, ],
+  controllers: [AuthenticateController, UserController],
+  providers: [UserCreateUseCase],
 })
 export class HttpModule {}

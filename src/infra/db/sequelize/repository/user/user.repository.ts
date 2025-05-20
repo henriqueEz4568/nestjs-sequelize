@@ -29,8 +29,9 @@ export default class UserRepository implements IUserRepository {
   delete(dbId: number): Promise<boolean> {
     throw new Error('Method not implemented');
   }
-  getAll(data?: RepositoryOptions, transaction?: any): Promise<User[]> {
-    throw new Error('Method not implemented');
+  async getAll(data?: RepositoryOptions, transaction?: any): Promise<User[]> {
+    const users = await UserModel.findAll({});
+    return users.map((i) => SequelizeUserMapper.toDomain(i));
   }
   getByDbId(dbId: number, transaction?: any): Promise<User> {
     throw new Error('Method not implemented');

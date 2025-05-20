@@ -31,12 +31,17 @@ export class AuthenticateController {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Senha inválida');
     }
+    const token = await this.jwt.sign(
+      { internal_id: user.id },
+      {
+        expiresIn: '1h',
+        //expiresIn: 3,
+      },
+    );
     return {
       user: {
         ...user.toJson(),
-        token: await this.jwt.sign({
-          internal_id: user.id,
-        }),
+        token,
       },
     };
   }
