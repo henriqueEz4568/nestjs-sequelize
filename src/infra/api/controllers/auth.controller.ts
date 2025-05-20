@@ -12,17 +12,14 @@ import { JwtService } from '@nestjs/jwt';
 import { BcryptHasher } from 'src/infra/factory/encrypt/bcrypt/bcrypt-encrypt-engine';
 import { compare, hash } from 'bcryptjs';
 import { IUserRepository } from '@entities/user/repository/user.repository.interface';
+import { Public } from '../modules/auth/public';
 @Controller('auth')
+@Public()
 export class AuthenticateController {
   constructor(
     private jwt: JwtService,
     private repository: IUserRepository,
   ) {}
-  @Get()
-  async listAll(): Promise<UserModel[]> {
-    const users = await UserModel.findAll({});
-    return users;
-  }
   @Post('login')
   async login(@Body() body: any): Promise<any> {
     const user = await this.repository.getByEmail(body.email);
@@ -43,13 +40,6 @@ export class AuthenticateController {
         ...user.toJson(),
         token,
       },
-    };
-  }
-  @Get('token')
-  async handle() {
-    const token = await this.jwt.sign({ sub: 'user-id' });
-    return {
-      token,
     };
   }
 }
