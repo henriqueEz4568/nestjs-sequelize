@@ -4,5 +4,6 @@ import User from '@entities/user/user.entity';
 export abstract class IUserRepository {
   abstract create(entity: User): Promise<User>;
   abstract getByEmail(email: string): Promise<User | undefined>;
+  abstract getById(id: string): Promise<User>;
   abstract getAll(): Promise<User[]>;
 }

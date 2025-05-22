@@ -1,3 +1,4 @@
+import { IUserRepository } from '@entities/user/repository/user.repository.interface';
 import { Injectable } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
@@ -5,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import UserRepository from 'src/infra/db/sequelize/repository/user/user.repository';
 import { z } from 'zod';
 
 const tokenSchema = z.object({
@@ -13,9 +15,8 @@ const tokenSchema = z.object({
 export type TokenSchema = z.infer<typeof tokenSchema>;
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private repository: IUserRepository) {
     const publicKey = process.env.JWT_PUBLIC_KEY;
-    console.log(publicKey)
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 
@@ -26,6 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: TokenSchema) {
-    return tokenSchema.parse(payload);
+    const { internal_id } = tokenSchema.parse(payload);
+    return this.repository.getById(internal_id);
   }
 }

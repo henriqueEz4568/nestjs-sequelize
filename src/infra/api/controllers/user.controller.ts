@@ -15,9 +15,9 @@ export class UserController {
     private usecase: UserCreateUseCase,
   ) {}
   @Get()
-  async getHello(): Promise<User[]> {
+  async getHello(): Promise<UserOutputDTO[]> {
     const users = await this.repository.getAll();
-    return users;
+    return users.map((i) => i.toJson());
   }
   @Post()
   async createUser(

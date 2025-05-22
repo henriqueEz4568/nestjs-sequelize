@@ -36,6 +36,14 @@ export default class UserRepository implements IUserRepository {
   getByDbId(dbId: number, transaction?: any): Promise<User> {
     throw new Error('Method not implemented');
   }
+  async getById(id: string): Promise<User> {
+    const data = await UserModel.findOne({
+      where: {
+        internal_id: id,
+      },
+    });
+    return SequelizeUserMapper.toDomain(data);
+  }
   getOne(data: RepositoryOptions, transaction?: any): Promise<User> {
     throw new Error('Method not implemented');
   }

@@ -8,6 +8,7 @@ import { UserController } from '../../controllers/user.controller';
 import { AuthModule } from '../auth/auth.module';
 import { UserCreateUseCase } from 'src/domain/usecases/user/user-create.usecase';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { FilesController } from '../../controllers/file.controller';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
     }),
   ],
   exports: [DatabaseModule],
-  controllers: [AuthenticateController, UserController],
+  controllers: [AuthenticateController, UserController, FilesController],
   providers: [UserCreateUseCase],
 })
 export class HttpModule {}
