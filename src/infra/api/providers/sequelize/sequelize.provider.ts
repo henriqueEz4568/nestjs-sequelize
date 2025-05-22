@@ -14,7 +14,7 @@ export const sequelizeProvider = [
         password: process.env.DB_PASS,
         database: process.env.DB_NAME,
       });
-      sequelize.addModels([UserModel, FilesModel]);
+       sequelize.addModels([UserModel, FilesModel]);
 
       try {
         await sequelize.sync();
