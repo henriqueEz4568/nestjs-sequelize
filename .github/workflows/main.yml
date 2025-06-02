@@ -1,0 +1,25 @@
+name: Run Tests on PR to dev
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # ou a versão do seu projeto
+
+      - name: Instalar dependências com legacy-peer-deps
+        run: npm install --legacy-peer-deps
+
+      - name: Rodar testes
+        run: npm run test
