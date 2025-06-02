@@ -56,5 +56,6 @@ describe('user repository integrated test', () => {
     expect(user.dbId).toBeDefined();
     expect(user.email).toBe('johndoe@gmail.com');
     expect(user.id).toBeDefined();
+    expect(user.email).toBe(false);
   });
 });
