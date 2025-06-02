@@ -14,5 +14,6 @@ describe('user unit tests', () => {
     expect(user.password).toBe('jhonpassword');
     expect(user.id).toBeDefined();
     expect(user.created).toBeDefined();
+    console.log('1234')
   });
 });
