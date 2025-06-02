@@ -15,6 +15,7 @@
     "paths": {
       "@entities/*": ["./src/domain/entity/*"],
       "@controllers/*": ["./src/infrastructure/api/controller/*"],
+      "@domain/*": ["./src/domain/*"],
       "src/*": ["./src/*"]
     },
     "incremental": true,
@@ -23,6 +24,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "types": ["multer"]
   }
 }

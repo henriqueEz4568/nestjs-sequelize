@@ -24,3 +24,15 @@ export default interface IRepositoryInterface<T> {
   count(data: RepositoryOptions, transaction?: any): Promise<RepositoryCount>;
   save(entity: T, transaction: any): Promise<T>;
 }
+export abstract class RepositoryClass<T> {
+  abstract getByDbId(dbId: number, transaction?: any): Promise<T>;
+  abstract create(entity: T, transaction?: any): Promise<T>;
+  abstract delete(dbId: number): Promise<boolean>;
+  abstract getAll(data?: RepositoryOptions, transaction?: any): Promise<T[]>;
+  abstract getOne(data: RepositoryOptions, transaction?: any): Promise<T>;
+  abstract count(
+    data: RepositoryOptions,
+    transaction?: any,
+  ): Promise<RepositoryCount>;
+  abstract save(entity: T, transaction: any): Promise<T>;
+}
