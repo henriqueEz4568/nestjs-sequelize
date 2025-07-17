@@ -6,8 +6,10 @@ import { BcryptHasher } from 'src/infra/factory/encrypt/bcrypt/bcrypt-encrypt-en
 import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 import { IUserRepository } from '@entities/user/repository/user.repository.interface';
 import { UserCreateUseCase } from 'src/domain/usecases/user/user-create.usecase';
+import { Public } from '../modules/auth/public';
 const hasher = new BcryptHasher();
 @Controller('users')
+@Public()
 export class UserController {
   constructor(
     private jwt: JwtService,

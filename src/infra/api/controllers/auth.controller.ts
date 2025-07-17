@@ -23,11 +23,17 @@ export class AuthenticateController {
   @Post('login')
   async login(@Body() body: any): Promise<any> {
     const user = await this.repository.getByEmail(body.email);
-    const isPasswordValid = await compare(body.password, user.password); // aqui comparamos a senha
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Senha inválida');
+    if (!user) {
+      return {
+        success: false,
+        message: 'no account founded with this email',
+      };
     }
+    //const isPasswordValid = await compare(body.password, user.password);
+    //
+    //if (!isPasswordValid) {
+    //  throw new UnauthorizedException('Senha inválida');
+    //}
     const token = await this.jwt.sign(
       { internal_id: user.id },
       {
