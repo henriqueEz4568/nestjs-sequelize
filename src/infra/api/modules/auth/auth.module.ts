@@ -13,8 +13,8 @@ import { DatabaseModule } from '../sequelize/database.sequelize.module';
     JwtModule.registerAsync({
       useFactory() {
         return {
-          privateKey: Buffer.from(process.env.JWT_PRIVATE_KEY, 'base64'),
-          publicKey: Buffer.from(process.env.JWT_PUBLIC_KEY, 'base64'),
+          privateKey: Buffer.from(process.env.JWT_PRIVATE_KEY, 'base64').toString('utf-8'),
+          publicKey: Buffer.from(process.env.JWT_PUBLIC_KEY, 'base64').toString('utf-8'),
           signOptions: {
             algorithm: 'RS256',
           },
