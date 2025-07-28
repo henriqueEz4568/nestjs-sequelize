@@ -1,0 +1,24 @@
+name: Auto PR Dev → Main (terça às 17h30)
+
+on:
+  schedule:
+    - cron: '30 20 * * 2'  # Terça-feira às 20:30 UTC (17:30 Brasília)
+  workflow_dispatch:       # Permite rodar manualmente também
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request from dev to main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          source: dev
+          destination: main
+          title: 'Dev → Main - PR automático (terça-feira)'
+          body: 'Este PR foi criado automaticamente toda terça-feira às 17h30 (horário de Brasília).'
+          branch: auto/pr-dev-to-main
