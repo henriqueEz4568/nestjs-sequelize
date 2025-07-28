@@ -1,24 +1,32 @@
-name: Auto PR Dev → Main (terça às 17h30)
+name: PR Dev → Main quinzenal
 
 on:
   schedule:
-    - cron: '30 20 * * 2'  # Terça-feira às 20:30 UTC (17:30 Brasília)
-  workflow_dispatch:       # Permite rodar manualmente também
+    - cron: '30 20 * * 2'  # terça-feira 20:30 UTC
+  workflow_dispatch:
 
 jobs:
   open-pr:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create Pull Request from dev to main
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          source: dev
-          destination: main
-          title: 'Dev → Main - PR automático (terça-feira)'
-          body: 'Este PR foi criado automaticamente toda terça-feira às 17h30 (horário de Brasília).'
-          branch: auto/pr-dev-to-main
+      - name: Instalar GitHub CLI
+        run: sudo apt install gh -y
+
+      - name: Autenticar com PAT
+        run: echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
+
+      - name: Criar PR de dev para main
+        run: |
+          EXISTING_PR=$(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
+
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create --base main --head dev \
+              --title "PR quinzenal: Dev → Main" \
+              --body "Pull request automático criado a cada duas semanas na terça-feira."
+          else
+            echo "Já existe um PR aberto de dev para main (#$EXISTING_PR)."
+          fi
