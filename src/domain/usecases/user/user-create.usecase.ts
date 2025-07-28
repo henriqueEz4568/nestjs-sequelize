@@ -5,7 +5,11 @@ import { hash } from 'bcryptjs';
 @Injectable()
 export class UserCreateUseCase {
   constructor(private repository: IUserRepository) {}
-  async execute(data: any): Promise<UserOutputDTO> {
+  async execute(data: {
+    password: string;
+    email: string;
+    name: string;
+  }): Promise<UserOutputDTO> {
     const emailExists = await this.repository.getByEmail(data.email);
     if (emailExists) {
       throw new Error('An user with this email already exists');
